@@ -24,6 +24,10 @@ input_style = {
     State('data-selector-source', 'children'),
 )
 def data_source(filter_click, data, original_content):
+    # Do nothing until the filter icon is clicked
+    if filter_click is None:
+        raise PreventUpdate
+
     # Modular to see if databar has been opened
     databar_is_open = (filter_click % 2 != 0)
 
