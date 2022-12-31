@@ -9,7 +9,6 @@ import mamba_ui as mui
     Output('band-dropdown', 'options'),
     Output('polarization-dropdown', 'options'),
     Input('sql-database-dropdown', 'value'),
-    prevent_initial_call=True
 )
 def populate_sidebar(_):
     dbm = lo.ImageryDatabaseManager()

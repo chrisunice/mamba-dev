@@ -22,7 +22,6 @@ input_style = {
     Input('filter-icon', 'n_clicks'),
     State('session-store', 'data'),
     State('data-selector-source', 'children'),
-    prevent_initial_call=True
 )
 def data_source(filter_click, data, original_content):
     # Modular to see if databar has been opened

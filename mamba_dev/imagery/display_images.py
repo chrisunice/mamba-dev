@@ -37,7 +37,6 @@ def serve_images(image_path):
     State('look-tolerance-input', 'value'),
     State('depression-center-input', 'value'),
     State('depression-tolerance-input', 'value'),
-    prevent_initial_call=True,
 )
 def display_images(submit_click, plats, bands, pols, look_center, look_span, depr_center, depr_span):
     if submit_click:

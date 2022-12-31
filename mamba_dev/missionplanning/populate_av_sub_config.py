@@ -11,7 +11,6 @@ from mamba_dev import config
 @mui.app.callback(
     Output('air-vehicle-sub-configuration', 'options'),
     Input('platform-database', 'value'),
-    prevent_initial_call=True
 )
 def populate_av_sub_config(platform):
     """ The sub configurations available for a given platform """

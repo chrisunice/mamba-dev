@@ -8,7 +8,6 @@ import mamba_ui as mui
     Input('menu-upload', 'n_clicks'),
     Input('upload-modal-close', 'n_clicks'),
     State('upload-modal', 'is_open'),
-    prevent_initial_call=True
 )
 def toggle_upload_window(upload_click, close_click, is_open):
     if upload_click or close_click:
