@@ -1,5 +1,6 @@
 import json
 import glob
+import numpy as np
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output
@@ -22,14 +23,9 @@ def populate_av_config(platform):
     with open(path_to_database, mode='r') as f:
         missions = json.load(f)
 
-    # Step through every mission
-    av_configs = []
-    for _, value in missions.items():
-        av_config = value['config']
+    # Grab every mission config
+    av_configs = [val['config'] for _, val in missions.items()]
 
-        # Check for duplicates
-        if av_config not in av_configs:
-            av_configs.append(av_config)
-
-    av_configs.sort()
+    # Remove duplicates
+    av_configs = np.unique(av_configs)
     return av_configs
