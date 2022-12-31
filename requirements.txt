@@ -1,0 +1,6 @@
+dash
+flask
+numpy
+plotly
+requests
+packaging==21.3.0
