@@ -14,6 +14,8 @@ def display_page(pathname):
         return mui.pages.data_vis.layout
     elif pathname == '/imagery':
         return mui.pages.imagery.layout
+    elif pathname == '/missionplanning':
+        return mui.pages.missionplanning.layout
     else:
         # todo add an alert here
         return mui.pages.home.layout
