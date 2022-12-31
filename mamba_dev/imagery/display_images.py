@@ -2,6 +2,7 @@ import os
 import flask
 import sqlite3
 import pandas as pd
+from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 
 import lodat as lo
@@ -39,6 +40,10 @@ def serve_images(image_path):
     State('depression-tolerance-input', 'value'),
 )
 def display_images(submit_click, plats, bands, pols, look_center, look_span, depr_center, depr_span):
+    # Do nothing until the submit button is clicked
+    if submit_click is None:
+        raise PreventUpdate
+
     if submit_click:
 
         dbm = lo.ImageryDatabaseManager()

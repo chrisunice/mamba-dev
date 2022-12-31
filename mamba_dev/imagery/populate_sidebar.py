@@ -1,7 +1,9 @@
 import lodat as lo
+from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output
 
 import mamba_ui as mui
+from mamba_dev import config
 
 
 @mui.app.callback(
@@ -11,7 +13,10 @@ import mamba_ui as mui
     Input('sql-database-dropdown', 'value'),
 )
 def populate_sidebar(_):
-    dbm = lo.ImageryDatabaseManager()
+    if _ is None:
+        raise PreventUpdate
+
+    dbm = lo.ImageryDatabaseManager(config['imagery']['imagery_database_path'])
     platforms = dbm.platforms
     bands = dbm.bands
     pols = dbm.polarizations
