@@ -1,6 +1,5 @@
 import json
 import glob
-import numpy as np
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output
@@ -12,8 +11,8 @@ from mamba_dev import config
     Output('missions', 'options'),
     Input('platform-database', 'value'),
 )
-def populate_av_sub_config(platform):
-    """ The sub configurations available for a given platform """
+def populate_missions(platform):
+    """ The missions available for a given platform """
     if platform is None:
         raise PreventUpdate
 
@@ -22,9 +21,7 @@ def populate_av_sub_config(platform):
     with open(path_to_database, mode='r') as f:
         missions = json.load(f)
 
-    # Grab every mission sub config
-    av_sub_configs = [val['sub_config'] for _, val in missions.items()]
-
-    # Remove duplicates
-    av_sub_configs = np.unique(av_sub_configs)
-    return av_sub_configs
+    # Get UMIs
+    umis = [val['umi'] for _, val in missions.items()]
+    umis.sort()
+    return umis

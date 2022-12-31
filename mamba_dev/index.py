@@ -26,6 +26,7 @@ from mamba_dev.missionplanning.populate_platform import populate_platform
 from mamba_dev.missionplanning.handle_platform_switch import handle_platform_switch
 from mamba_dev.missionplanning.populate_av_config import populate_av_config
 from mamba_dev.missionplanning.populate_av_sub_config import populate_av_sub_config
+from mamba_dev.missionplanning.populate_missions import populate_missions
 
 
 if __name__ == "__main__":
