@@ -4,18 +4,18 @@ import mamba_ui as mui
 
 
 @mui.app.callback(
-    Output("sidebar", "is_open"),
+    Output("menubar", "is_open"),
     [
         Input("menu-icon", "n_clicks"),
         Input("url", "pathname")
     ],
-    State("sidebar", "is_open")
+    State("menubar", "is_open")
 )
-def toggle_sidebar(menu_click, link_click, is_open):
-    # If menu button is clicked open or close the sidebar
+def toggle_menubar(menu_click, link_click, is_open):
+    # If hamburger is clicked open or close the menubar
     if menu_click:
         return not is_open
 
-    # If sidebar is already open and link is clicked
+    # If menubar is already open and link is clicked
     if is_open and link_click:
         return False

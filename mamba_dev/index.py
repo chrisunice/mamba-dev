@@ -3,7 +3,7 @@ from mamba_dev import config
 
 # Home page callbacks
 from mamba_dev.home.display_page import display_page
-from mamba_dev.home.toggle_sidebar import toggle_sidebar
+from mamba_dev.home.toggle_menubar import toggle_menubar
 from mamba_dev.home.store_data import store_uploaded_data
 from mamba_dev.home.change_menu_icon import change_menu_icon
 from mamba_dev.home.toggle_upload import toggle_upload_window

@@ -5,7 +5,7 @@ import mamba_ui as mui
 
 @mui.app.callback(
     Output('menu-icon', 'className'),
-    Input('sidebar', 'is_open')
+    Input('menubar', 'is_open')
 )
 def change_menu_icon(is_open):
     if is_open:
