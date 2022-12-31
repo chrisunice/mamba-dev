@@ -11,7 +11,7 @@ def display_page(pathname):
     if pathname == '/home':
         return mui.pages.home.layout
     elif pathname == '/data-visualization':
-        return mui.pages.data_vis.layout
+        return mui.pages.datavis.layout
     elif pathname == '/imagery':
         return mui.pages.imagery.layout
     elif pathname == '/mission-planning':
