@@ -1,8 +1,9 @@
 import os
 import glob
+import mamba_ui as mui
 from dash.dependencies import Input, Output
 
-import mamba_ui as mui
+from mamba_dev import config
 
 
 @mui.app.callback(
@@ -10,6 +11,6 @@ import mamba_ui as mui
     Input('mission-planning-page', 'children')
 )
 def populate_platform(_):
-    database_directory = 'C:\\Mamba\\test_assets'
+    database_directory = config['test']['test_assets_folder']
     databases = glob.glob(f"{database_directory}\\*mongodb.json")
     return [os.path.basename(db).rstrip('-mongodb.json').upper() for db in databases]
