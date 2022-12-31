@@ -15,11 +15,14 @@ from mamba_dev.imagery.populate_sidebar import populate_sidebar
 from mamba_dev.imagery.show_database_icon import show_database_icon
 
 # Data visualization page callbacks
-from mamba_dev.data_vis.populate_data_selector import data_source, vector_group
-from mamba_dev.data_vis.render_plot import render_plot
-from mamba_dev.data_vis.toggle_databar import toggle_databar
-from mamba_dev.data_vis.show_filter_icon import show_filter_icon
-from mamba_dev.data_vis.switch_tabs import switch_tabs
+from mamba_dev.datavis.populate_data_selector import data_source, vector_group
+from mamba_dev.datavis.render_plot import render_plot
+from mamba_dev.datavis.toggle_databar import toggle_databar
+from mamba_dev.datavis.show_filter_icon import show_filter_icon
+from mamba_dev.datavis.switch_tabs import switch_tabs
+
+# Mission planning page callbacks
+from mamba_dev.missionplanning.populate_platform import populate_platform
 
 
 if __name__ == "__main__":
