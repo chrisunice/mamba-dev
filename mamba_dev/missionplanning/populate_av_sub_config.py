@@ -9,13 +9,12 @@ from mamba_dev import config
 
 
 @mui.app.callback(
-    Output('air-vehicle-configuration', 'options'),
+    Output('air-vehicle-sub-configuration', 'options'),
     Input('platform-database', 'value'),
     prevent_initial_call=True
 )
-def populate_av_config(platform):
-    """ The configurations available for a given platform """
-    # Don't do anything until a platform has been selected
+def populate_av_sub_config(platform):
+    """ The sub configurations available for a given platform """
     if platform is None:
         raise PreventUpdate
 
@@ -24,9 +23,9 @@ def populate_av_config(platform):
     with open(path_to_database, mode='r') as f:
         missions = json.load(f)
 
-    # Grab every mission config
-    av_configs = [val['config'] for _, val in missions.items()]
+    # Grab every mission sub config
+    av_sub_configs = [val['sub_config'] for _, val in missions.items()]
 
     # Remove duplicates
-    av_configs = np.unique(av_configs)
-    return av_configs
+    av_sub_configs = np.unique(av_sub_configs)
+    return av_sub_configs
