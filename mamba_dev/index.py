@@ -23,6 +23,7 @@ from mamba_dev.datavis.switch_tabs import switch_tabs
 
 # Mission planning page callbacks
 from mamba_dev.missionplanning.populate_platform import populate_platform
+from mamba_dev.missionplanning.populate_av_config import populate_av_config
 
 
 if __name__ == "__main__":
