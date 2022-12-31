@@ -22,6 +22,7 @@ from mamba_dev.datavis.show_filter_icon import show_filter_icon
 from mamba_dev.datavis.switch_tabs import switch_tabs
 
 # Mission planning page callbacks
+# TODO in these populate callbacks a checklist component is going to need to be sent
 from mamba_dev.missionplanning.populate_platform import populate_platform
 from mamba_dev.missionplanning.handle_platform_switch import handle_platform_switch
 from mamba_dev.missionplanning.populate_av_config import populate_av_config
