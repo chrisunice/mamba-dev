@@ -25,9 +25,9 @@ from mamba_dev.datavis.switch_tabs import switch_tabs
 from mamba_dev.missionplanning.populate_platform import populate_platform, force_one, display_selection
 # from mamba_dev.missionplanning.handle_platform_switch import handle_platform_switch
 from mamba_dev.missionplanning.populate_av_config import populate_av_config, display_selection
-from mamba_dev.missionplanning.populate_av_sub_config import populate_av_sub_config
-from mamba_dev.missionplanning.populate_missions import populate_missions
-
+from mamba_dev.missionplanning.populate_av_sub_config import populate_av_sub_config, display_selection
+from mamba_dev.missionplanning.populate_missions import populate_missions, display_selection, select_all_or_clear_all
+from mamba_dev.missionplanning.populate_vectors import populate_vectors, display_selection, select_all_or_clear_all
 
 if __name__ == "__main__":
 
