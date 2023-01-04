@@ -15,7 +15,7 @@ from mamba_dev import config
 def populate_av_config(selected_platform: list):
     """ The configurations available for a given platform """
     # Don't do anything until a platform has been selected
-    if selected_platform is None:
+    if not bool(selected_platform):
         raise PreventUpdate
 
     # Load the database
@@ -27,7 +27,11 @@ def populate_av_config(selected_platform: list):
     av_configs = [val['config'] for _, val in missions.items()]
     av_configs = list(np.unique(av_configs))
 
-    return mui.components.DropdownChecklist('air-vehicle-configuration', av_configs, menu_item_kwargs=dict(toggle=False))
+    return mui.components.DropdownChecklist(
+        id_name='air-vehicle-configuration',
+        items=av_configs,
+        menu_item_kwargs=dict(toggle=False)
+    )
 
 
 @mui.app.callback(
