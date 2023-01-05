@@ -1,55 +1,35 @@
 import os
 import glob
-from dash import dcc
 import mamba_ui as mui
-import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
-from dash.dependencies import Input, Output
+from dash_extensions.enrich import Input, Output, State
 
 from mamba_dev import config
 
 
 @mui.app.callback(
-    Output('platform-database-dropdown', 'children'),
-    Input('mission-planning-page', 'children')
+    Output('platform-database-dropdown-checklist', 'options'),
+    Output('platform-database-dropdown-menu-item', 'toggle'),
+    Output('platform-database-dropdown-checklist', 'inputStyle'),
+    Input('mission-planning-page', 'children'),
+    State('platform-database-dropdown-checklist', 'inputStyle'),
 )
-def populate_platform(_):
-
-    checklist_style = {
-        'display': 'flex',
-        'flex-direction': 'column',
-    }
-
-    checkbox_style = {
-        'margin-right': '10px'
-    }
-
-    label_style = {
-        'color': 'black',
-        'font-size': 'larger'
-    }
-
+def populate_platform(_, checkbox_style: dict):
+    # Get platforms
     database_directory = config['test']['test_assets_folder']
     databases = glob.glob(f"{database_directory}\\*mongodb.json")
     platforms = [os.path.basename(db).rstrip('-mongodb.json').upper() for db in databases]
-    return dbc.DropdownMenuItem(
-        children=[
-            dcc.Checklist(
-                id='platform-database-checklist',
-                options=platforms,
-                style=checklist_style,
-                inputStyle=checkbox_style,
-                labelStyle=label_style
-            )
-        ],
-        style={'background-color': 'transparent'},
-        toggle=True
-    )
+
+    # Update checkbox style
+    if 'display' in checkbox_style.keys():
+        checkbox_style['display'] = 'inline'
+
+    return platforms, True, checkbox_style
 
 
 @mui.app.callback(
-    Output('platform-database-dropdown', 'label'),
-    Input('platform-database-checklist', 'value'),
+    Output('platform-database-dropdown-menu', 'label'),
+    Input('platform-database-dropdown-checklist', 'value'),
 )
 def display_selection(value):
     if value is None:
@@ -62,14 +42,15 @@ def display_selection(value):
 
 
 @mui.app.callback(
-    Output('platform-database-checklist', 'value'),
-    Input('platform-database-checklist', 'value'),
+    Output('platform-database-dropdown-checklist', 'value'),
+    Input('platform-database-dropdown-checklist', 'value'),
 )
 def force_one(new_value: list):
+    # TODO next this would probably be a good callback to handle reseting all fields on database switch
     if new_value is None:
         raise PreventUpdate
 
-    # Remove
+    # Grab only the last checkbox selected
     if len(new_value) > 1:
         new_value = [new_value[-1]]
 
