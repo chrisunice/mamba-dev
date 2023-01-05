@@ -1,21 +1,24 @@
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
-from dash.dependencies import Input, Output, State
+from dash_extensions.enrich import Input, Output, State
 
 
 @mui.app.callback(
-    Output('air-vehicle-configuration', 'value'),
-    Output('air-vehicle-sub-configuration', 'value'),
-    Output('missions', 'value'),
-    Output('vector-groups', 'value'),
-    Input('platform-database', 'value'),
-    State('platform-database', 'value')
+    # Output('look-bin-width', 'value'),
+    Output('air-vehicle-configuration-dropdown-checklist', 'value'),
+    Output('air-vehicle-sub-configuration-dropdown-checklist', 'value'),
+    # Output('missions-dropdown-checklist', 'value'),
+    Output('vector-groups-dropdown-checklist', 'value'),
+    Input('platform-database-dropdown-checklist', 'value'),
+
 )
-def handle_platform_switch(current_db, prior_db):
+def handle_platform_switch(platform):
+    # Fixme need to figure out how to avoid the circular dependency this causes
     # A database wasn't already loaded, do nothing
-    if prior_db is None:
+    if platform is None:
         raise PreventUpdate
     else:
         # A new database has been selected, reset all the subsequent fields
-        num_outputs = 4
-        return [None]*num_outputs
+        # num_outputs = 4
+        # return [[] for _ in range(num_outputs)]
+        return [], [], []

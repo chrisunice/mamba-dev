@@ -1,4 +1,4 @@
-from dash.dependencies import Output, Input
+from dash_extensions.enrich import Output, Input
 
 import mamba_ui as mui
 

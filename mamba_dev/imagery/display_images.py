@@ -3,7 +3,7 @@ import flask
 import sqlite3
 import pandas as pd
 from dash.exceptions import PreventUpdate
-from dash.dependencies import Input, Output, State
+from dash_extensions.enrich import Input, Output, State
 
 import lodat as lo
 import mamba_ui as mui

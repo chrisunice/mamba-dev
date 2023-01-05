@@ -1,7 +1,7 @@
 import os
 import json
 import dash_uploader
-from dash.dependencies import Output
+from dash_extensions.enrich import Output
 
 
 @dash_uploader.callback(

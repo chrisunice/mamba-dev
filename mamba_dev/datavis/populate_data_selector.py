@@ -2,7 +2,7 @@ import os
 import json
 from dash import dcc
 from dash.exceptions import PreventUpdate
-from dash.dependencies import Input, Output, State
+from dash_extensions.enrich import Input, Output, State
 
 import lodat as lo
 import mamba_ui as mui
