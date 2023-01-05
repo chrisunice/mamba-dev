@@ -7,3 +7,4 @@ from .populate_vectors import *
 from .update_look_range import update_look_range
 from .update_depr_range import update_depr_range
 from .populate_metrics import populate_metrics, display_selection
+from .show_hide_percentile import show_hide_percentile
