@@ -2,16 +2,18 @@ import json
 import glob
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
-from dash.dependencies import Input, Output, State
+from dash_extensions.enrich import Input, Output, State
 
 from mamba_dev import config
 
 
 @mui.app.callback(
-    Output('missions-dropdown', 'children'),
-    Input('platform-database-checklist', 'value'),
+    Output('missions-dropdown-checklist', 'options'),
+    Output('missions-dropdown-checklist', 'inputStyle'),
+    Input('platform-database-dropdown-checklist', 'value'),
+    State('missions-dropdown-checklist', 'inputStyle'),
 )
-def populate_missions(selected_platform):
+def populate_missions(selected_platform, checkbox_style: dict):
     """ The missions available for a given platform """
     # Don't do anything until a platform has been selected
     if not bool(selected_platform):
@@ -25,16 +27,18 @@ def populate_missions(selected_platform):
     # Get UMIs
     umis = [val['umi'] for _, val in missions.items()]
     umis.sort()
-    return mui.components.DropdownChecklist(
-        id_name='missions',
-        items=['Select all', 'Clear all']+umis,
-        menu_item_kwargs=dict(toggle=False)
-    )
+    umis = ['Select all', 'Clear all']+umis
+
+    # Update checkbox style
+    if 'display' in checkbox_style.keys():
+        checkbox_style['display'] = 'inline'
+
+    return umis, checkbox_style
 
 
 @mui.app.callback(
-    Output('missions-dropdown', 'label'),
-    Input('missions-checklist', 'value'),
+    Output('missions-dropdown-menu', 'label'),
+    Input('missions-dropdown-checklist', 'value'),
 )
 def display_selection(selected_missions: list):
     if selected_missions is None:
@@ -52,9 +56,9 @@ def display_selection(selected_missions: list):
 
 
 @mui.app.callback(
-    Output('missions-checklist', 'value'),
-    Input('missions-checklist', 'value'),
-    State('missions-checklist', 'options')
+    Output('missions-dropdown-checklist', 'value'),
+    Input('missions-dropdown-checklist', 'value'),
+    State('missions-dropdown-checklist', 'options')
 )
 def select_all_or_clear_all(selected_mission: list, all_missions: list):
     if selected_mission is None:
