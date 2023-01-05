@@ -16,7 +16,10 @@ def show_hide_percentile(_, checklist_value, row_style):
     if ctx.triggered_id == 'mission-planning-page':
         row_style['display'] = 'none'
     elif ctx.triggered_id == 'compute-metric-dropdown-checklist':
-        if checklist_value[0].lower() == 'percentile':
+        if not bool(checklist_value):
+            # nothing selected
+            pass
+        elif checklist_value[0].lower() == 'percentile':
             row_style['display'] = 'flex'
         else:
             row_style['display'] = 'none'
