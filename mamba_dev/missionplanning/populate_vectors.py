@@ -4,16 +4,18 @@ import itertools
 import numpy as np
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
-from dash.dependencies import Input, Output, State
+from dash_extensions.enrich import Input, Output, State
 
 from mamba_dev import config
 
 
 @mui.app.callback(
-    Output('vector-groups-dropdown', 'children'),
-    Input('platform-database-checklist', 'value'),
+    Output('vector-groups-dropdown-checklist', 'options'),
+    Output('vector-groups-dropdown-checklist', 'inputStyle'),
+    Input('platform-database-dropdown-checklist', 'value'),
+    State('vector-groups-dropdown-checklist', 'inputStyle'),
 )
-def populate_vectors(selected_platform):
+def populate_vectors(selected_platform: list, checkbox_style: dict):
     """ The vector groups available for a given platform """
     # Don't do anything until a platform has been selected
     if not bool(selected_platform):
@@ -34,16 +36,18 @@ def populate_vectors(selected_platform):
             int(x.split(' ')[0])
         )
     )
-    return mui.components.DropdownChecklist(
-        id_name='vector-groups',
-        items=['Select all', 'Clear all']+vectors,
-        menu_item_kwargs=dict(toggle=False)
-    )
+    vectors = ['Select all', 'Clear all']+vectors
+
+    # Update checkbox style
+    if 'display' in checkbox_style.keys():
+        checkbox_style['display'] = 'inline'
+
+    return vectors, checkbox_style
 
 
 @mui.app.callback(
-    Output('vector-groups-dropdown', 'label'),
-    Input('vector-groups-checklist', 'value'),
+    Output('vector-groups-dropdown-menu', 'label'),
+    Input('vector-groups-dropdown-checklist', 'value'),
 )
 def display_selection(selected_vectors: list):
     if selected_vectors is None:
@@ -61,9 +65,9 @@ def display_selection(selected_vectors: list):
 
 
 @mui.app.callback(
-    Output('vector-groups-checklist', 'value'),
-    Input('vector-groups-checklist', 'value'),
-    State('vector-groups-checklist', 'options')
+    Output('vector-groups-dropdown-checklist', 'value'),
+    Input('vector-groups-dropdown-checklist', 'value'),
+    State('vector-groups-dropdown-checklist', 'options')
 )
 def select_all_or_clear_all(selected_vectors: list, all_vectors: list):
     if selected_vectors is None:
