@@ -10,3 +10,4 @@ from .populate_metrics import populate_metrics, display_selection
 from .show_hide_percentile import show_hide_percentile
 from .store_inputs import store_inputs
 from .update_console import update_console
+from .reset_all import reset_all

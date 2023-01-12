@@ -8,6 +8,8 @@ from dash_extensions.enrich import Input, Output
 def _formatter(x: list | None):
     if x is None:
         return str(x)
+    elif not bool(x):
+        return 'None'
     else:
         return '\n\t\t'.join(x)
 
@@ -29,7 +31,7 @@ def update_console(data):
 
     # Handle metric
     metric = inputs['metric']
-    if metric is None:
+    if not bool(metric):
         metric = 'None'
     elif metric == ['Percentile']:
         metric = f"{metric[0]} (P{inputs['percentile']})"
