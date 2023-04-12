@@ -5,6 +5,11 @@ from dash_extensions.enrich import Input, Output, ServersideOutput, State, Trigg
 
 import mamba_ui as mui
 
+# This is a global variable that is editable by any client
+# not good practice
+IMAGERY_PROCESS_RUNNING = False
+IMAGERY_PROCESS_NAME = 'imagery'
+
 
 def worker():
     while True:
@@ -13,36 +18,41 @@ def worker():
 
 
 @mui.app.callback(
-    Output('settings-store', 'data'),
-    Trigger('dash-layout', 'children')
+    Trigger('dash-layout', 'children'),
 )
 def init_monitoring():
-    process = mp.Process(name='imagery_process', target=worker)
-    process.start()
-    print(f'{process} has started')
-    data = {'process_name': process.name}
-    return json.dumps(data)
+
+    global IMAGERY_PROCESS_RUNNING
+
+    if not IMAGERY_PROCESS_RUNNING:
+        process = mp.Process(name=IMAGERY_PROCESS_NAME, target=worker)
+        process.start()
+        IMAGERY_PROCESS_RUNNING = True
+        print(f'{process} has started')
 
 
 @mui.app.callback(
     Input('monitor-imagery-switch', 'on'),
-    State('settings-store', 'data'),
     prevent_initial_call=True
 )
-def monitor_imagery(switch_on, data):
+def monitor_imagery(switch_on):
 
-    data = json.loads(data)
+    global IMAGERY_PROCESS_NAME, IMAGERY_PROCESS_RUNNING
 
     child_processes = mp.active_children()
     for child in child_processes:
-        if child.name == data['process_name']:
+        if child.name == IMAGERY_PROCESS_NAME:
             process = child
 
-    if switch_on:
-        process = mp.Process(name='imagery_process', target=worker)
+    if switch_on and not IMAGERY_PROCESS_RUNNING:
+        process = mp.Process(name=IMAGERY_PROCESS_NAME, target=worker)
         process.start()
+        IMAGERY_PROCESS_RUNNING = True
         print(f'{process} has started')
     else:
         if process.is_alive():
             process.terminate()
+            IMAGERY_PROCESS_RUNNING = False
             print(f'{process} has stopped')
+
+# TODO need to update the switch to reflect the state of whether or not the imagery process is running
