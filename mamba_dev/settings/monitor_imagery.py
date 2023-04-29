@@ -15,8 +15,9 @@ IMAGERY_PROCESS_NAME = 'imagery'
 def worker():
     """ Dummy function """
     while True:
-        print(f'\tRunning on process {mp.current_process().pid}')
-        time.sleep(0.5)
+        # print(f'\tRunning on process {mp.current_process().pid}')
+        # time.sleep(0.5)
+        pass
 
 
 def _get_imagery_process() -> mp.Process | None:
