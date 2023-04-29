@@ -4,6 +4,7 @@ import dash_auth
 import mamba_ui as mui
 from mamba_dev import config
 
+from mamba_dev.boot import *
 from mamba_dev.home import *
 from mamba_dev.settings import *
 
@@ -15,7 +16,6 @@ if __name__ == "__main__":
         app=mui.app,
         username_password_list=dict(config['login'])
     )
-
 
     mui.app.layout = mui.serve_layout()
     run_kwargs = dict(
