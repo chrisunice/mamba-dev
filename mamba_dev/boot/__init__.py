@@ -1,1 +1,1 @@
-from .store_info import store_serverside
+from .store_info import store_session_serverside
