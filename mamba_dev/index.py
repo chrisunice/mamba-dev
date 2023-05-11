@@ -8,6 +8,8 @@ from mamba_dev.boot import *
 from mamba_dev.home import *
 from mamba_dev.settings import *
 
+from mamba_dev.sandbox import *
+
 
 if __name__ == "__main__":
 

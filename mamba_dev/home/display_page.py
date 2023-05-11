@@ -17,5 +17,4 @@ def display_page(pathname):
     elif pathname == '/mission-planning':
         return mui.pages.missionplanning.layout
     else:
-        # todo add an alert here
-        return mui.pages.home.layout
+        return mui.pages.sandbox.layout
