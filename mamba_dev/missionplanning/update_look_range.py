@@ -1,15 +1,15 @@
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
-from dash_extensions.enrich import Input, Output, ctx
+from dash_extensions.enrich import Output, ctx, CycleBreakerInput
 
 
 @mui.app.callback(
     Output('look-range-slider', 'value'),
     Output('look-range-min-input', 'value'),
     Output('look-range-max-input', 'value'),
-    Input('look-range-slider', 'value'),
-    Input('look-range-min-input', 'value'),
-    Input('look-range-max-input', 'value'),
+    CycleBreakerInput('look-range-slider', 'value'),
+    CycleBreakerInput('look-range-min-input', 'value'),
+    CycleBreakerInput('look-range-max-input', 'value'),
 )
 def update_look_range(
         slider_value: tuple[int | float, int | float],
