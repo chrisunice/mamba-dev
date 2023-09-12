@@ -1,15 +1,15 @@
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
-from dash_extensions.enrich import Input, Output, ctx
+from dash_extensions.enrich import CycleBreakerInput, Output, ctx
 
 
 @mui.app.callback(
     Output('depression-range-slider', 'value'),
     Output('depression-range-min-input', 'value'),
     Output('depression-range-max-input', 'value'),
-    Input('depression-range-slider', 'value'),
-    Input('depression-range-min-input', 'value'),
-    Input('depression-range-max-input', 'value'),
+    CycleBreakerInput('depression-range-slider', 'value'),
+    CycleBreakerInput('depression-range-min-input', 'value'),
+    CycleBreakerInput('depression-range-max-input', 'value'),
 )
 def update_depr_range(
         slider_value: tuple[int | float, int | float],

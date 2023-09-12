@@ -58,7 +58,8 @@ def display_selection(selected_missions: list):
 @mui.app.callback(
     Output('missions-dropdown-checklist', 'value'),
     CycleBreakerInput('missions-dropdown-checklist', 'value'),
-    State('missions-dropdown-checklist', 'options')
+    State('missions-dropdown-checklist', 'options'),
+    prevent_initial_call=True
 )
 def select_all_or_clear_all(selected_mission: list, all_missions: list):
     if selected_mission is None:

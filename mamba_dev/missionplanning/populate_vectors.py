@@ -67,7 +67,8 @@ def display_selection(selected_vectors: list):
 @mui.app.callback(
     Output('vector-groups-dropdown-checklist', 'value'),
     CycleBreakerInput('vector-groups-dropdown-checklist', 'value'),
-    State('vector-groups-dropdown-checklist', 'options')
+    State('vector-groups-dropdown-checklist', 'options'),
+    prevent_initial_call=True
 )
 def select_all_or_clear_all(selected_vectors: list, all_vectors: list):
     if selected_vectors is None:

@@ -1,6 +1,6 @@
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
-from dash_extensions.enrich import Input, Output, State
+from dash_extensions.enrich import Input, Output, State, CycleBreakerInput
 
 from mamba_dev import config
 
@@ -39,7 +39,7 @@ def display_selection(value):
 
 @mui.app.callback(
     Output('compute-metric-dropdown-checklist', 'value'),
-    Input('compute-metric-dropdown-checklist', 'value'),
+    CycleBreakerInput('compute-metric-dropdown-checklist', 'value'),
 )
 def force_one(new_value: list):
     if new_value is None:
