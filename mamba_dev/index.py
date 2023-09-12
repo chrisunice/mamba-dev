@@ -9,6 +9,7 @@ from mamba_dev.home import *
 from mamba_dev.settings import *
 
 from mamba_dev.sandbox import *
+from mamba_dev.missionplanning import *
 
 
 if __name__ == "__main__":
