@@ -2,7 +2,7 @@ import json
 import glob
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
-from dash_extensions.enrich import Input, Output, State
+from dash_extensions.enrich import Input, Output, State, CycleBreakerInput
 
 from mamba_dev import config
 
@@ -57,7 +57,7 @@ def display_selection(selected_missions: list):
 
 @mui.app.callback(
     Output('missions-dropdown-checklist', 'value'),
-    Input('missions-dropdown-checklist', 'value'),
+    CycleBreakerInput('missions-dropdown-checklist', 'value'),
     State('missions-dropdown-checklist', 'options')
 )
 def select_all_or_clear_all(selected_mission: list, all_missions: list):
