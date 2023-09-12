@@ -1,20 +1,21 @@
-from multiprocessing import Queue
+from queue import Queue
 
 log_queue = Queue()
 
-from .populate_platform import *
-from .populate_av_config import *
-from .populate_av_sub_config import *
-from .populate_missions import *
-from .populate_vectors import *
-from .handle_platform_switch import *
+from .populate_platform import populate_platform, display_selection, force_one
+from .populate_av_config import populate_av_config, display_selection
+from .populate_av_sub_config import populate_av_sub_config, display_selection
+from .populate_missions import populate_missions, display_selection, select_all_or_clear_all
+from .populate_vectors import populate_vectors, display_selection, select_all_or_clear_all
+from .handle_platform_switch import handle_platform_switch
 from .update_look_range import update_look_range
 from .update_depr_range import update_depr_range
 from .populate_metrics import populate_metrics, display_selection
 from .show_hide_percentile import show_hide_percentile
 from .store_inputs import store_inputs
 from .reset_all import reset_all
-from .build_mpf import build_mpf
+# from .build_mpf import build_mpf
+from .build_mpf import open_modal
 from .init_console import init_console
 from .update_console import update_console
 from .clear_log import clear_log
