@@ -2,7 +2,7 @@ import os
 import glob
 import mamba_ui as mui
 from dash.exceptions import PreventUpdate
-from dash_extensions.enrich import Input, Output, State
+from dash_extensions.enrich import Input, Output, State, CycleBreakerInput
 
 from mamba_dev import config
 
@@ -38,15 +38,15 @@ def display_selection(value):
     if not bool(value):
         return 'Select...'
     else:
-        return value
+        return value[-1]
 
 
 @mui.app.callback(
     Output('platform-database-dropdown-checklist', 'value'),
-    Input('platform-database-dropdown-checklist', 'value'),
+    CycleBreakerInput('platform-database-dropdown-checklist', 'value'),
 )
 def force_one(new_value: list):
-    # TODO next this would probably be a good callback to handle reseting all fields on database switch
+    # TODO next this would probably be a good callback to handle resetting all fields on database switch
     if new_value is None:
         raise PreventUpdate
 
