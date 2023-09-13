@@ -1,2 +1,3 @@
 ipython
 pip-chill
+psutil          # allows me to look into processes relationships
