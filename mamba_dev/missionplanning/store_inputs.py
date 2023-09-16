@@ -5,7 +5,7 @@ from dash_extensions.enrich import Input, Output, State
 
 
 @mui.app.callback(
-    Output('mission-planning-store', 'data'),
+    Output('mission-planning-input-store', 'data'),
     Input('mission-planning-page-submit-button', 'n_clicks'),
     [
         State('platform-database-dropdown-checklist', 'value'),
@@ -62,9 +62,4 @@ def store_inputs(
     except (ValueError, AttributeError):
         pass
 
-    # Store all inputs under a single key
-    data = {
-        'inputs': input_args
-    }
-
-    return json.dumps(data)
+    return json.dumps(input_args)
