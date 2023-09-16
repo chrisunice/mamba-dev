@@ -20,14 +20,13 @@ def _timestamp():
 
 @mui.app.callback(
     Output('output-log', 'value'),
-    Input('mission-planning-store', 'data')
+    Input('mission-planning-input-store', 'data')
 )
 def init_console(data):
     if data is None:
         raise PreventUpdate
 
-    log = json.loads(data)
-    inputs = log['inputs']
+    inputs = json.loads(data)
 
     # Handle metric
     metric = inputs['metric']
