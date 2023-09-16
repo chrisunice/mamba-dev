@@ -57,15 +57,15 @@ def start_thread():
     return None
 
 
-@mui.app.callback(
-    Trigger('dash-layout', 'children'),
-)
-def init_monitoring():
-    """ Start an imagery thread on application load if one is not already running """
-    global IMAGERY_THREAD_RUNNING
-    if not IMAGERY_THREAD_RUNNING:
-        start_thread()
-        print(f'Imagery thread has been started by {request.remote_addr}')
+# @mui.app.callback(
+#     Trigger('dash-layout', 'children'),
+# )
+# def init_monitoring():
+#     """ Start an imagery thread on application load if one is not already running """
+#     global IMAGERY_THREAD_RUNNING
+#     if not IMAGERY_THREAD_RUNNING:
+#         start_thread()
+#         print(f'Imagery thread has been started by {request.remote_addr}')
 
 
 @mui.app.callback(
