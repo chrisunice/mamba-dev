@@ -1,7 +1,9 @@
-import os
+"""
+TODO next work on getting the background callback working because if the user submits a MPF build and then leaves the
+ page nothing will end up being exported
+"""
+
 import json
-import time
-import psutil
 import numpy as np
 import pandas as pd
 from pathos.pools import ProcessPool
@@ -11,7 +13,6 @@ from dash_extensions.enrich import Input, Output, State, ServersideOutput
 
 import mamba_ui as mui
 from mamba_dev import logger
-from mamba_dev.missionplanning import log_queue
 
 
 def _dbm_query(param_chunks: list) -> pd.DataFrame:
