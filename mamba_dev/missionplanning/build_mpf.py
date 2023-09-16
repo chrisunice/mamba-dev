@@ -3,44 +3,63 @@ import json
 import time
 import psutil
 import numpy as np
-import mamba_ui as mui
-from itertools import product
+import pandas as pd
+from pathos.pools import ProcessPool
+from itertools import product, repeat
 from dash.exceptions import PreventUpdate
-from dash_extensions.enrich import Input, Output, State
+from dash_extensions.enrich import Input, Output, State, ServersideOutput
 
+import mamba_ui as mui
+from mamba_dev import logger
 from mamba_dev.missionplanning import log_queue
 
 
-def _fake_mpf_builder():
-    """ This is a placeholder function to imitate the build_mpf method """
-    time.sleep(1)
-    return None
+def _dbm_query(param_chunks: list) -> pd.DataFrame:
+    """ This is a fake function to simulate what the RCS database query would be like with various parameters """
 
+    logger.debug(f"Querying for RCS data with a chunk of {len(param_chunks)} parameters")
 
-# @mui.app.callback(
-#     Output('mission-planning-download-modal', 'is_open'),
-#     Input('mission-planning-page-submit-button', 'n_clicks'),
-#     State('mission-planning-download-modal', 'is_open')
-# )
-# def open_modal(submit_click, modal_open):
-#     if submit_click is None:
-#         raise PreventUpdate
-#
-#     return not modal_open
+    df = pd.DataFrame()
+    # Step thru every param set in the param_chunk and perform the query
+    for params in param_chunks:
+        look, depr, freq, pol = params
+
+        # Generate some fake RCS data
+        hits = np.random.randint(10, 100)
+        tmp = pd.DataFrame(
+            data={'RCS': np.random.random((hits, ))},
+        )
+
+        # Add iterable params
+        tmp['Look'] = look
+        tmp['Depression'] = depr
+        tmp['Frequency'] = freq
+        tmp['Polarization'] = pol
+
+        # Add constant params
+        # for param_name, param_value in const.items():
+        #     tmp[param_name] = param_value
+
+        # Append to final data frame
+        df = pd.concat((df, tmp))
+
+    logger.debug(f"Finished all queries")
+
+    return df
+
 
 @mui.app.callback(
+    ServersideOutput('mission-planning-output-store', 'data'),
     Output('mission-planning-download-modal', 'is_open'),
-    Input('mission-planning-store', 'data')
+    Input('mission-planning-input-store', 'data')
 )
-def build_mpf(mpf_store):
-    if mpf_store is None:
+def build_mpf(input_store):
+    if input_store is None:
         raise PreventUpdate
 
-    current_pid = os.getpid()
-    parent_pid = psutil.Process(current_pid).ppid()
-    print(f"The build_mpf callback is running in process: {current_pid} and its parent process is: {parent_pid}")
+    logger.debug('Starting to build MPF')
 
-    user_inputs = json.loads(mpf_store)['inputs']
+    user_inputs = json.loads(input_store)
 
     # Get all the iterable parameters
     # look
@@ -64,24 +83,26 @@ def build_mpf(mpf_store):
     freqs = np.unique(freqs).tolist()
     pols = np.unique(pols).tolist()
 
+    # Assemble parameters that will be iterated over and the constant parameters
+    iterable_params = list(product(looks, deprs, freqs, pols))
+    constant_params = dict(
+        avconfig=user_inputs.get('av_config'),
+        avsubconfig=user_inputs.get('av_sub_config')
+    )
 
-    iterable_params = product(looks, deprs, freqs, pols)
+    # Split the iterable parameters up into chunks based on number of workers
+    workers = 8
+    chunk_size = np.ceil(len(iterable_params) / workers).astype(int)
+    chunks = [iterable_params[i:i + chunk_size] for i in range(0, len(iterable_params), chunk_size)]
 
-    # I'm going to skip all the constant parameters because I don't actually have a query method to call
+    # Perform all the database queries based on the users input
+    pool = ProcessPool(workers)
+    try:
+        results = pool.map(_dbm_query, chunks)
+    except ValueError:
+        pool.restart()
+        results = pool.map(_dbm_query, chunks)
+    pool.close()
 
-    # # Things to iterate over
-    # vectors = inputs['vectors']
-    # looks = np.arange(inputs['look_min'], inputs['look_max'], inputs['look_width'])
-    # deprs = np.arange(inputs['depr_min'], inputs['depr_max'], inputs['depr_width'])
-    #
-    # # Iterate and store in queue
-    # for vg in vectors:
-    #     for lk in looks:
-    #         for dp in deprs:
-    #             message = f"Working on {vg}, Look: {lk}, Depr: {dp}"
-    #             log_queue.put(message)
-    #             print(f'Just added \n{message}')
-    #             _fake_mpf_builder()
-
-    # Pop modal
-    return True
+    # Return dataframe and pop the download modal
+    return pd.concat(results), True
