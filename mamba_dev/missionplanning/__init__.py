@@ -16,5 +16,7 @@ from .store_inputs import store_inputs
 from .reset_all import reset_all
 from .build_mpf import build_mpf
 from .init_console import init_console
-from .update_console import update_console
+# from .update_console import update_console
 from .clear_log import clear_log
+
+from .handle_mpf_download import handle_download_button, handle_close_button
