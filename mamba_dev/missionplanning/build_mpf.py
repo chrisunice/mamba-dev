@@ -15,7 +15,7 @@ import mamba_ui as mui
 from mamba_dev import logger
 
 
-def _dbm_query(param_chunks: list) -> pd.DataFrame:
+def _dbm_query(param_chunks: list, const: dict) -> pd.DataFrame:
     """ This is a fake function to simulate what the RCS database query would be like with various parameters """
 
     logger.debug(f"Querying for RCS data with a chunk of {len(param_chunks)} parameters")
@@ -38,8 +38,8 @@ def _dbm_query(param_chunks: list) -> pd.DataFrame:
         tmp['Polarization'] = pol
 
         # Add constant params
-        # for param_name, param_value in const.items():
-        #     tmp[param_name] = param_value
+        for param_name, param_value in const.items():
+            tmp[param_name] = param_value[0]
 
         # Append to final data frame
         df = pd.concat((df, tmp))
@@ -99,10 +99,10 @@ def build_mpf(input_store):
     # Perform all the database queries based on the users input
     pool = ProcessPool(workers)
     try:
-        results = pool.map(_dbm_query, chunks)
+        results = pool.map(_dbm_query, chunks, repeat(constant_params))
     except ValueError:
         pool.restart()
-        results = pool.map(_dbm_query, chunks)
+        results = pool.map(_dbm_query, chunks, repeat(constant_params))
     pool.close()
 
     # Return dataframe and pop the download modal
