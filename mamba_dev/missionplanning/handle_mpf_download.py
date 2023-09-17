@@ -8,6 +8,7 @@ import mamba_ui as mui
 
 @mui.app.callback(
     Output('mission-planning-download', 'data'),
+    Output('mission-planning-download-modal', 'is_open'),
     Input('mission-planning-download-button', 'n_clicks'),
     State('mission-planning-output-store', 'data')
 )
@@ -15,7 +16,7 @@ def handle_download_button(download_click: int, mpf: pd.DataFrame):
     if download_click is None:
         raise PreventUpdate
 
-    return dcc.send_data_frame(mpf.to_csv, 'mpf.csv')
+    return dcc.send_data_frame(mpf.to_csv, 'mpf.csv'), False
 
 
 @mui.app.callback(
