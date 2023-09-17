@@ -12,9 +12,12 @@ import mamba_ui as mui
     Input('mission-planning-download-button', 'n_clicks'),
     State('mission-planning-output-store', 'data')
 )
-def handle_download_button(download_click: int, mpf: pd.DataFrame):
+def handle_download_button(download_click: int, mpf: pd.DataFrame | str):
     if download_click is None:
         raise PreventUpdate
+
+    if isinstance(mpf, str):
+        mpf = pd.read_json(mpf, orient='split')
 
     return dcc.send_data_frame(mpf.to_csv, 'mpf.csv'), False
 

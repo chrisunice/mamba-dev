@@ -3,6 +3,7 @@ TODO next work on getting the background callback working because if the user su
  page nothing will end up being exported
 """
 
+import os
 import json
 import numpy as np
 import pandas as pd
@@ -18,7 +19,7 @@ from mamba_dev import logger
 def _dbm_query(param_chunks: list, const: dict) -> pd.DataFrame:
     """ This is a fake function to simulate what the RCS database query would be like with various parameters """
 
-    logger.debug(f"Querying for RCS data with a chunk of {len(param_chunks)} parameters")
+    logger.debug(f"Parent: ({os.getppid()}) - Querying for RCS data with a chunk of {len(param_chunks)}")
 
     df = pd.DataFrame()
     # Step thru every param set in the param_chunk and perform the query
@@ -44,7 +45,7 @@ def _dbm_query(param_chunks: list, const: dict) -> pd.DataFrame:
         # Append to final data frame
         df = pd.concat((df, tmp))
 
-    logger.debug(f"Finished all queries")
+    logger.debug(f"Parent: ({os.getppid()}) - Finished all queries")
 
     return df
 
@@ -58,7 +59,7 @@ def build_mpf(input_store):
     if input_store is None:
         raise PreventUpdate
 
-    logger.debug('Starting to build MPF')
+    logger.debug(f'Parent: ({os.getppid()}) Starting to build MPF')
 
     user_inputs = json.loads(input_store)
 
