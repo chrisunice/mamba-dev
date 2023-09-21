@@ -1,7 +1,8 @@
 import os
-from configparser import ConfigParser
+import json
 
-config = ConfigParser()
-config.read(f"{os.path.dirname(__file__)}\\config.ini")
+path_to_config = f"{os.path.dirname(__file__)}\\config.json"
+with open(path_to_config, mode='r') as json_file:
+    config = json.load(json_file)
 
 from .logger import logger

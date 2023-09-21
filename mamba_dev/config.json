@@ -1,0 +1,45 @@
+{
+  "default": {
+    "root_dir": "C:/Mamba"
+  },
+  "modes": {
+    "development": {
+      "host": "127.0.0.1",
+      "port": 8888,
+      "debug": true
+    },
+    "production": {
+      "host": "0.0.0.0",
+      "port": 3308,
+      "debug": false
+    }
+  },
+  "users": {
+    "1": {
+      "username": "cunice",
+      "password": "931240",
+      "role": "administrator"
+    },
+    "2": {
+      "username": "jellsworth",
+      "password": "060190",
+      "role": "user"
+    },
+    "3": {
+      "username": "tlilly",
+      "password": "12345",
+      "role": "developer"
+    }
+  },
+  "imagery": {
+    "upload_folder": "C:/Mamba/uploads",
+    "image_folder": "C:/Mamba/test_assets/images",
+    "imagery_database_path": "C:/LODAT/test_assets/imagery.sqlite"
+  },
+  "missionplanning": {
+    "metrics": ["arithmetic mean", "geometric mean", "median", " percentile"]
+  },
+  "test": {
+    "assets_folder": "C:/Mamba/test_assets"
+  }
+}

@@ -16,7 +16,7 @@ from mamba_dev import config
 )
 def populate_platform(_, checkbox_style: dict):
     # Get platforms
-    database_directory = config['test']['test_assets_folder']
+    database_directory = config['test']['assets_folder']
     databases = glob.glob(f"{database_directory}\\*mongodb.json")
     platforms = [os.path.basename(db).rstrip('-mongodb.json').upper() for db in databases]
 

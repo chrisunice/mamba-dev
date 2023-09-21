@@ -1,6 +1,7 @@
 import logging
 
 fmt = [
+    '%(name)s',
     '%(filename)s',
     '%(funcName)s',
     'Process: %(process)d',
@@ -10,7 +11,7 @@ fmt = [
 
 logging.basicConfig(
     format=' - '.join(fmt),
-    level='DEBUG'
+    level=logging.DEBUG
 )
 
 logger = logging.getLogger('MambaLogger')

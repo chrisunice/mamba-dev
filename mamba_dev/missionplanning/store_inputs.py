@@ -5,6 +5,7 @@ from dash_extensions.enrich import Input, Output, State
 
 
 @mui.app.callback(
+    Output('mission-planning-download-modal', 'is_open'),
     Output('mission-planning-input-store', 'data'),
     Input('mission-planning-page-submit-button', 'n_clicks'),
     [
@@ -42,7 +43,7 @@ def store_inputs(
         msn_per_bin: int,
         metric: list,
         percentile: int
-):
+) -> tuple[bool, str]:
     # Do nothing until the submit button is clicked
     if submit_click is None:
         raise PreventUpdate
@@ -62,4 +63,6 @@ def store_inputs(
     except (ValueError, AttributeError):
         pass
 
-    return json.dumps(input_args)
+    open_modal = True
+    user_inputs = json.dumps(input_args)
+    return open_modal, user_inputs

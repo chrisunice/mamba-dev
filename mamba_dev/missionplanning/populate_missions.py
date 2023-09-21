@@ -20,7 +20,7 @@ def populate_missions(selected_platform, checkbox_style: dict):
         raise PreventUpdate
 
     # Load the database
-    path_to_database = glob.glob(f"{config['test']['test_assets_folder']}\\*{selected_platform[0]}*.json")[0]
+    path_to_database = glob.glob(f"{config['test']['assets_folder']}\\*{selected_platform[0]}*.json")[0]
     with open(path_to_database, mode='r') as f:
         missions = json.load(f)
 

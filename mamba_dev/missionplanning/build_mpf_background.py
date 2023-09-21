@@ -13,7 +13,6 @@ from dash_extensions.enrich import Input, Output, ServersideOutput
 import mamba_ui as mui
 from mamba_dev import config
 from mamba_dev import logger
-from .build_mpf import _dbm_query
 
 
 cache = diskcache.Cache(f"{config['default']['root_dir']}\\cache")
@@ -25,9 +24,12 @@ background_callback_manager = DiskcacheManager(cache)
     inputs=Input("mission-planning-input-store", "data"),
     background=True,
     manager=background_callback_manager,
-    # allow_duplicate=True
+    running=[
+        (Output('mission-planning-download-button', 'disabled'), True, False)
+    ],
+    cancel=[Input('mission-planning-close-button', 'n_clicks')]
 )
-def build_mpf_background(input_store):
+def build_mpf(input_store):
     if input_store is None:
         raise PreventUpdate
 
@@ -83,12 +85,46 @@ def build_mpf_background(input_store):
     return df.to_json(orient='split')
 
 
-@mui.app.callback(
-    Output('mission-planning-download-modal', 'is_open'),
-    Input('mission-planning-output-store', 'data')
-)
-def pop_modal(output_store: pd.DataFrame) -> bool:
-    if output_store is None:
-        raise PreventUpdate
+# @mui.app.callback(
+#     Output('mission-planning-download-modal', 'is_open'),
+#     Input('mission-planning-output-store', 'data')
+# )
+# def pop_modal(output_store: pd.DataFrame) -> bool:
+#     if output_store is None:
+#         raise PreventUpdate
+#
+#     return True
 
-    return True
+
+def _dbm_query(param_chunks: list, const: dict) -> pd.DataFrame:
+    """ This is a fake function to simulate what the RCS database query would be like with various parameters """
+
+    logger.debug(f"Parent: ({os.getppid()}) - Querying for RCS data with a chunk of {len(param_chunks)}")
+
+    df = pd.DataFrame()
+    # Step through every param set in the param_chunk and perform the query
+    for params in param_chunks:
+        look, depr, freq, pol = params
+
+        # Generate some fake RCS data
+        hits = np.random.randint(10, 100)
+        tmp = pd.DataFrame(
+            data={'RCS': np.random.random((hits, ))},
+        )
+
+        # Add iterable params
+        tmp['Look'] = look
+        tmp['Depression'] = depr
+        tmp['Frequency'] = freq
+        tmp['Polarization'] = pol
+
+        # Add constant params
+        for param_name, param_value in const.items():
+            tmp[param_name] = param_value[0]
+
+        # Append to final data frame
+        df = pd.concat((df, tmp))
+
+    logger.debug(f"Parent: ({os.getppid()}) - Finished all queries")
+
+    return df

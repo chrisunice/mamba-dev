@@ -16,38 +16,7 @@ import mamba_ui as mui
 from mamba_dev import logger
 
 
-def _dbm_query(param_chunks: list, const: dict) -> pd.DataFrame:
-    """ This is a fake function to simulate what the RCS database query would be like with various parameters """
 
-    logger.debug(f"Parent: ({os.getppid()}) - Querying for RCS data with a chunk of {len(param_chunks)}")
-
-    df = pd.DataFrame()
-    # Step thru every param set in the param_chunk and perform the query
-    for params in param_chunks:
-        look, depr, freq, pol = params
-
-        # Generate some fake RCS data
-        hits = np.random.randint(10, 100)
-        tmp = pd.DataFrame(
-            data={'RCS': np.random.random((hits, ))},
-        )
-
-        # Add iterable params
-        tmp['Look'] = look
-        tmp['Depression'] = depr
-        tmp['Frequency'] = freq
-        tmp['Polarization'] = pol
-
-        # Add constant params
-        for param_name, param_value in const.items():
-            tmp[param_name] = param_value[0]
-
-        # Append to final data frame
-        df = pd.concat((df, tmp))
-
-    logger.debug(f"Parent: ({os.getppid()}) - Finished all queries")
-
-    return df
 
 
 @mui.app.callback(

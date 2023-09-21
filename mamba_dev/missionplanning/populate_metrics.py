@@ -14,7 +14,7 @@ from mamba_dev import config
 )
 def populate_metrics(_, checkbox_style: dict):
     # Get metrics
-    metrics = [val.capitalize() for val in config['missionplanning']['metrics'].split(', ')]
+    metrics = [val.capitalize() for val in config['missionplanning']['metrics']]
 
     # Update checkbox style
     if 'display' in checkbox_style.keys():

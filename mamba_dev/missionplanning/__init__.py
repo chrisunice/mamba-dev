@@ -18,6 +18,5 @@ from .init_console import init_console
 # from .update_console import update_console
 from .clear_log import clear_log
 
-# from .build_mpf import build_mpf
-from .build_mpf_background import build_mpf_background, pop_modal
+from .build_mpf_background import build_mpf
 from .handle_mpf_download import handle_download_button, handle_close_button
