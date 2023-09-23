@@ -20,3 +20,5 @@ from .clear_log import clear_log
 
 from .build_mpf_background import build_mpf
 from .handle_mpf_download import handle_download_button, handle_close_button
+
+from .disable_slider_tab_focus import disableTabFocus
