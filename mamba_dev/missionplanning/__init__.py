@@ -12,7 +12,7 @@ from .update_look_range import update_look_range
 from .update_depr_range import update_depr_range
 from .populate_metrics import populate_metrics, display_selection
 from .show_hide_percentile import show_hide_percentile
-from .store_inputs import store_inputs
+from .handle_inputs import handle_inputs
 from .reset_all import reset_all
 from .init_console import init_console
 # from .update_console import update_console
