@@ -10,7 +10,6 @@ from dash.exceptions import PreventUpdate
 from dash import DiskcacheManager, callback
 from dash_extensions.enrich import Input, Output, ServersideOutput
 
-import mamba_ui as mui
 from mamba_dev import config
 from mamba_dev import logger
 
