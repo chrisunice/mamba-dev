@@ -1,3 +1,5 @@
+import os
+import time
 import numpy as np
 from typing import Callable
 from itertools import product
@@ -21,20 +23,25 @@ def query_chunk(
     is_monitoring = param_chunk['monitor']
     chunk = param_chunk['params']
 
+    if is_monitoring:
+        print(f"{os.getpid()} is monitoring the progress")
+    else:
+        print(f"{os.getpid()} is NOT monitoring the progress")
+
     total = len(chunk)
     for idx, params in enumerate(chunk):
         look, depr, freq, pol = params
-        print(*params)
         if is_monitoring:
             set_progress((idx + 1, total))
         pass
+    time.sleep(1)
 
     return pd.DataFrame([1, 2, 3])
 
 
 if __name__ == '__main__':
     # Hard coded config values
-    NUM_WORKERS = 1
+    NUM_WORKERS = 8
 
     # Things that I want to iterate over
     looks = np.arange(0, 360, 60)
