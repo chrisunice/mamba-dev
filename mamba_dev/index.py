@@ -26,10 +26,9 @@ if __name__ == "__main__":
     mui.app.layout = mui.serve_layout()
 
     # Launch the server
-    DASH_DEBUG_MODE = True
-    if DASH_DEBUG_MODE:
-        run_kwargs = config['modes']['development']
+    if config.get('server_debug_mode'):
+        run_kwargs = config['run_modes']['development']
     else:
-        run_kwargs = config['modes']['production']
+        run_kwargs = config['run_modes']['production']
     mui.app.run(**run_kwargs)
 

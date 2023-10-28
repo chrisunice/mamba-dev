@@ -66,33 +66,26 @@ def build_mpf(input_store):
     )
 
     # Split the iterable parameters up into chunks based on number of workers
-    workers = 8
-    chunk_size = np.ceil(len(iterable_params) / workers).astype(int)
+    num_workers = max(1, int(config['missionplanning']['cpu_allocation']*os.cpu_count()))
+    chunk_size = np.ceil(len(iterable_params) / num_workers).astype(int)
     chunks = [iterable_params[i:i + chunk_size] for i in range(0, len(iterable_params), chunk_size)]
 
     # Perform all the database queries based on the users input
-    pool = ProcessPool(workers)
-    try:
-        results = pool.map(_dbm_query, chunks, repeat(constant_params))
-    except ValueError:
-        pool.restart()
-        results = pool.map(_dbm_query, chunks, repeat(constant_params))
-    pool.close()
+    if num_workers > 1:
+        # Parallel processing
+        pool = ProcessPool(num_workers)
+        try:
+            results = pool.map(_dbm_query, chunks, repeat(constant_params))
+        except ValueError:
+            pool.restart()
+            results = pool.map(_dbm_query, chunks, repeat(constant_params))
+        pool.close()
+    else:
+        results = list(map(_dbm_query, chunks, repeat(constant_params)))
 
     # Return dataframe
     df = pd.concat(results)
     return df.to_json(orient='split')
-
-
-# @mui.app.callback(
-#     Output('mission-planning-download-modal', 'is_open'),
-#     Input('mission-planning-output-store', 'data')
-# )
-# def pop_modal(output_store: pd.DataFrame) -> bool:
-#     if output_store is None:
-#         raise PreventUpdate
-#
-#     return True
 
 
 def _dbm_query(param_chunks: list, const: dict) -> pd.DataFrame:

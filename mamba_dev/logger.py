@@ -14,4 +14,7 @@ logging.basicConfig(
     level=logging.DEBUG
 )
 
+werkzeug_logger = logging.getLogger('werkzeug')
+werkzeug_logger.setLevel(logging.ERROR)
+
 logger = logging.getLogger('MambaLogger')

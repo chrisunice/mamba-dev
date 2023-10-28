@@ -2,7 +2,8 @@
   "default": {
     "root_dir": "C:/Mamba"
   },
-  "modes": {
+  "server_debug_mode": true,
+  "run_modes": {
     "development": {
       "host": "127.0.0.1",
       "port": 8888,
@@ -37,7 +38,8 @@
     "imagery_database_path": "C:/LODAT/test_assets/imagery.sqlite"
   },
   "missionplanning": {
-    "metrics": ["arithmetic mean", "geometric mean", "median", " percentile"]
+    "cpu_allocation": 0.10,
+    "metrics": ["arithmetic mean", "geometric mean", "median", "percentile"]
   },
   "test": {
     "assets_folder": "C:/Mamba/test_assets"

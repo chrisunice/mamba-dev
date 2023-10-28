@@ -53,6 +53,10 @@ def handle_inputs(
     input_args = locals().copy()
     input_args.pop('submit_click')
 
+    # Remove the percentile input if the percentile metric isn't chosen
+    if input_args.get('metric')[0].lower() != 'percentile':
+        input_args.pop('percentile')
+
     # Check that all inputs are entered
     for name, value in input_args.items():
         if value is None:
