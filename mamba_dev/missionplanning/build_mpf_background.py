@@ -1,6 +1,7 @@
+from flask import session
 import json
 import os
-
+from dash import html
 import diskcache
 import numpy as np
 import pandas as pd
@@ -12,14 +13,15 @@ from dash_extensions.enrich import Input, Output, ServersideOutput
 
 from mamba_dev import config
 from mamba_dev import logger
-
+import mamba_ui as mui
 
 cache = diskcache.Cache(f"{config['default']['root_dir']}\\cache")
 background_callback_manager = DiskcacheManager(cache)
 
 
 @callback(
-    output=ServersideOutput("mission-planning-output-store", "data"),
+    # output=Output("mission-planning-output-store", "data"),
+    output=Output('mission-planning-download-button', 'children'),
     inputs=Input("mission-planning-input-store", "data"),
     background=True,
     manager=background_callback_manager,
@@ -85,7 +87,28 @@ def build_mpf(input_store):
 
     # Return dataframe
     df = pd.concat(results)
-    return df.to_json(orient='split')
+
+    dir_name = f"{config['default']['root_dir']}/"
+    path_to_csv = "C:/Mamba/my-mpf-file.csv"
+    df.to_csv(path_to_csv, index=False)
+    # return df.to_json(orient='split')
+    # return {'mpf_path': path_to_csv}
+    # session['mpf_path'] = path_to_csv
+    return html.A(
+        id='mpf-download-anchor',
+        children=[
+            html.I(className='fa-solid fa-file-arrow-down', style={'margin-right': '10px'}),
+            'Download',
+        ],
+        href='/download-mpf?mpf_path=C:/Mamba/my-mpf-file.csv',
+        style=dict(
+            display='flex',
+            justifyContent='center',
+            alignItems='center',
+            textDecoration='none',
+            color='white'
+        )
+    )
 
 
 def _dbm_query(param_chunks: list, const: dict) -> pd.DataFrame:

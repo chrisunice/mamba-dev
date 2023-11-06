@@ -1,25 +1,26 @@
+from flask import session, send_file, request
 import pandas as pd
-from dash import dcc
+from dash import dcc, html
 from dash.exceptions import PreventUpdate
 from dash_extensions.enrich import Input, Output, State
 
 import mamba_ui as mui
 
 
-@mui.app.callback(
-    Output('mission-planning-download', 'data'),
-    Output('mission-planning-download-modal', 'is_open'),
-    Input('mission-planning-download-button', 'n_clicks'),
-    State('mission-planning-output-store', 'data')
-)
-def handle_download_button(download_click: int, mpf: pd.DataFrame | str):
-    if download_click is None:
-        raise PreventUpdate
+# @mui.app.callback(
+#     Input('mission-planning-output-store', 'data')
+# )
+# def store_mpf_path(mpf_store: dict):
+#     if mpf_store is None:
+#         raise PreventUpdate
+#
+#     session['mpf_path'] = mpf_store['mpf_path']
 
-    if isinstance(mpf, str):
-        mpf = pd.read_json(mpf, orient='split')
 
-    return dcc.send_data_frame(mpf.to_csv, 'mpf.csv'), False
+@mui.app.server.route('/download-mpf')
+def handle_download_button():
+    path_to_mpf = request.args.get('mpf_path')
+    return send_file(path_to_mpf, as_attachment=True)
 
 
 @mui.app.callback(
